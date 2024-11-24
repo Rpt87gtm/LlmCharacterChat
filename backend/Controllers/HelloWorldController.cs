@@ -6,10 +6,11 @@ namespace llmChat.Controllers
     [Route("/helloWorld")]
     public class HelloWorldController : ControllerBase
     {
+
         [HttpGet]
         public ActionResult<string> Get()
         {
-            return "Hello, World!";
+            return Ok("Hello, World!");
         }
     }
 }
