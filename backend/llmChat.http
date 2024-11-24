@@ -1,0 +1,6 @@
+@llmChat_HostAddress = http://localhost:5190
+
+GET {{llmChat_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
