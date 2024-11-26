@@ -18,7 +18,7 @@ namespace llmChat.Controllers.Tests
             // Assert
             var actionResult = Assert.IsType<ActionResult<string>>(result);
             var okResult = Assert.IsType<OkObjectResult>(actionResult.Result);
-            Assert.Equal("Hello, World!", okResult.Value);
+            Assert.Equal("Hello, World! qwe", okResult.Value);
         }
     }
 }

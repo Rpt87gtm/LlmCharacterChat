@@ -10,7 +10,7 @@ namespace llmChat.Controllers
         [HttpGet]
         public ActionResult<string> Get()
         {
-            return Ok("Hello, World!");
+            return Ok("Hello, World! qwe");
         }
     }
 }

@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import { routes } from '@/shared/config/routes';
+import { BaseRoutes } from '@/app/routers/BaseRoutes';
 
-
+const routes = [...BaseRoutes]
 
 
 

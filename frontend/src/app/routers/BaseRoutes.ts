@@ -1,7 +1,7 @@
 import { HomePage } from "@/pages/home/index";
 import { Example } from "@/pages/examplePage";
 
-export const routes = [
+export const BaseRoutes = [
   {
     path: '/',
     name: 'home',
