@@ -5,6 +5,12 @@
   </div>
 </template>
 
+<script>
+export default {
+  name: 'App',
+};
+</script>
+
 <style scoped>
 .logo {
   height: 6em;

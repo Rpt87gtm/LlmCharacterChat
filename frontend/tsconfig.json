@@ -114,6 +114,6 @@
     "types": ["vite/client"],
     "moduleResolution": "node"
   },
-  "include": ["src"],                            
+  "include": ["src","src/**/*.ts", "src/**/*.tsx", "src/**/*.vue", "shims-vue.d.ts"],                            
   "exclude": ["node_modules"] 
 }
