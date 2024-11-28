@@ -1,6 +1,6 @@
 <template>
-    <div>
-      <h1>Login</h1>
+    <div id="loginForm">
+      
       <LoginForm />
     </div>
   </template>
@@ -12,3 +12,10 @@
     components: { LoginForm },
   };
   </script>
+
+<style scoped>
+.loginForm{
+  justify-content: center;
+  align-items: center;
+}
+</style>
