@@ -1,5 +1,5 @@
 <template>
-    <form @submit.prevent="register">
+    <form @submit.prevent="registerUser">
       <input v-model="username" placeholder="Username" required />
       <input v-model="email" type="email" placeholder="Email" required />
       <input v-model="password" type="password" placeholder="Password" required />
@@ -7,14 +7,14 @@
     </form>
   </template>
   
-  <script>
+  <script lang="ts">
   import { ref } from 'vue';
   import { useRouter } from 'vue-router';
-  import { register } from '@/features/auth/api';
+  import { register } from '@/features/auth/api/api';
   
   export default {
     setup() {
-      const router = useRouter();
+      const router = useRouter(); 
       const username = ref('');
       const email = ref('');
       const password = ref('');

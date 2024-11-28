@@ -26,7 +26,7 @@ export default {
         };
         const response = await login(userData);
         console.log('Login successful:', response);
-        setAuthToken(response.token); // Сохраняем токен
+        setAuthToken(response.token); 
         router.push('/');
       } catch (error) {
         console.error('Login failed:', error);
