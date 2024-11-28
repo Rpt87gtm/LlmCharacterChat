@@ -13,7 +13,7 @@ namespace api.Dtos.Account
 
         [Required]
         public string? Password { get; set; }
-
+        
         
     }
 }

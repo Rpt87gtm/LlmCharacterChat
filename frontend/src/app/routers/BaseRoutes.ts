@@ -6,6 +6,8 @@ export const BaseRoutes = [
     path: '/',
     name: 'home',
     component: HomePage,
+    meta: {requiresAuth: true},
+
   },
   {
     path: '/example',

@@ -109,11 +109,13 @@
     "skipLibCheck": true ,                                /* Skip type checking all .d.ts files. */
     "baseUrl": ".",
     "paths": {
-      "@/*": ["src/*"]
+      "@/*": ["src/*"],
+      "@features/*": ["src/features/*"],
+      "@shared/*": ["src/shared/*"]
     },
     "types": ["vite/client"],
     "moduleResolution": "node"
   },
-  "include": ["src","src/**/*.ts", "src/**/*.tsx", "src/**/*.vue", "shims-vue.d.ts"],                            
+  "include": ["src","src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue", "shims-vue.d.ts"],                            
   "exclude": ["node_modules"] 
 }

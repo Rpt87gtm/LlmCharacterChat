@@ -1,12 +1,18 @@
 
 <template>
   <div id="app">
+    <AppHeader />
     <router-view />
   </div>
 </template>
 
-<script>
+
+
+<script lang="ts">
+import AppHeader from '@shared/components/AppHeader.vue';
+
 export default {
+  components: { AppHeader },
   name: 'App',
 };
 </script>
@@ -24,4 +30,5 @@ export default {
 .logo.vue:hover {
   filter: drop-shadow(0 0 2em #42b883aa);
 }
+
 </style>
