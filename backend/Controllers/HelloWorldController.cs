@@ -9,11 +9,11 @@ namespace llmChat.Controllers
     [Route("/helloWorld")]
     public class HelloWorldController : ControllerBase
     {
-        private readonly ApplicationDBContext _dbContext;
+    
 
-        public HelloWorldController(ApplicationDBContext dbContext)
+        public HelloWorldController()
         {
-            _dbContext = dbContext;
+
         }
 
         [HttpGet]
