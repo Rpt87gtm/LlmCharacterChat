@@ -52,7 +52,6 @@
   <ItemGroup>
     <Folder Include="ChatModel\" />
     <Folder Include="Dtos\Chat\" />
-    <Folder Include="Service\LLMService\" />
   </ItemGroup>
 
 </Project>

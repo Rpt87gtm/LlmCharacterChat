@@ -4,6 +4,9 @@ namespace llmChat.Models.Chat
 {
     public class Message
     {
+        [JsonPropertyName("id")]
+        public Guid Id { get; set; }
+
         [JsonPropertyName("role")]
         public string Role { get; set; }
 
