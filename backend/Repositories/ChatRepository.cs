@@ -2,6 +2,7 @@
 using llmChat.Interfaces;
 using llmChat.Models.Chat;
 using Microsoft.EntityFrameworkCore;
+using System;
 
 namespace llmChat.Repositories
 {
@@ -14,63 +15,64 @@ namespace llmChat.Repositories
             _dbContext = dbContext;
         }
 
-        public async Task<ChatHistory?> GetChatHistoryAsync(Guid chatId)
+        public async Task<ChatHistory> CreateChatAsync(ChatHistory chat)
+        {
+            _dbContext.ChatHistories.Add(chat);
+            await _dbContext.SaveChangesAsync();
+            return chat;
+        }
+
+        public async Task<ChatHistory?> GetChatByIdAsync(Guid chatId)
+        {
+            return await _dbContext.ChatHistories
+                .FirstOrDefaultAsync(c => c.Id == chatId);
+        }
+
+        public async Task AddMessageAsync(Message message)
+        {
+            _dbContext.Messages.Add(message);
+            await _dbContext.SaveChangesAsync();
+        }
+
+        public async Task UpdateMessageAsync(Message message)
+        {
+            _dbContext.Messages.Update(message);
+            await _dbContext.SaveChangesAsync();
+        }
+
+        public async Task DeleteChatAsync(Guid chatId)
+        {
+            var chat = await GetChatByIdAsync(chatId);
+            if (chat != null)
+            {
+                _dbContext.ChatHistories.Remove(chat);
+                await _dbContext.SaveChangesAsync();
+            }
+        }
+
+        public async Task<Message?> GetMessageByIdAsync(Guid messageId)
+        {
+            return await _dbContext.Messages.FirstOrDefaultAsync(m => m.Id == messageId);
+        }
+
+        public async Task DeleteMessageAsync(Guid messageId)
+        {
+            var message = await GetMessageByIdAsync(messageId);
+            if (message != null)
+            {
+                _dbContext.Messages.Remove(message);
+                await _dbContext.SaveChangesAsync();
+            }
+        }
+
+        public async Task<ChatHistory?> GetChatWithMessagesAsync(Guid chatId)
         {
             return await _dbContext.ChatHistories
                 .Include(ch => ch.Messages)
+                .Include(ch => ch.Character)
                 .FirstOrDefaultAsync(ch => ch.Id == chatId);
         }
 
-        public async Task SaveChatHistoryAsync(ChatHistory chatHistory)
-        {
-            var existingChat = await _dbContext.ChatHistories
-                .Include(ch => ch.Messages)
-                .FirstOrDefaultAsync(ch => ch.Id == chatHistory.Id);
-
-            if (existingChat == null)
-            {
-                await _dbContext.ChatHistories.AddAsync(chatHistory);
-            }
-            else
-            {
-                existingChat.Messages = chatHistory.Messages;
-                _dbContext.ChatHistories.Update(existingChat);
-            }
-
-            await _dbContext.SaveChangesAsync();
-        }
-
-        public async Task<Character?> GetCharacterAsync(Guid characterId)
-        {
-            return await _dbContext.Characters
-                .Include(c => c.CreatedByAppUser)
-                .FirstOrDefaultAsync(c => c.Id == characterId);
-        }
-
-        public async Task<List<Character>> GetCharactersByUserIdAsync(string userId)
-        {
-            return await _dbContext.Characters
-                .Where(c => c.CreatedByAppUserId == userId)
-                .ToListAsync();
-        }
-
-        public async Task SaveCharacterAsync(Character character)
-        {
-            var existingCharacter = await _dbContext.Characters
-                .FirstOrDefaultAsync(c => c.Id == character.Id);
-
-            if (existingCharacter == null)
-            {
-                await _dbContext.Characters.AddAsync(character);
-            }
-            else
-            {
-                existingCharacter.Name = character.Name;
-                existingCharacter.SystemPrompt = character.SystemPrompt;
-                _dbContext.Characters.Update(existingCharacter);
-            }
-
-            await _dbContext.SaveChangesAsync();
-        }
     }
+
 }

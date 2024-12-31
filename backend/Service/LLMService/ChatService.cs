@@ -31,7 +31,15 @@ namespace llmChat.Service.LLMService
             var response = await _httpClient.PostAsync(fastApiUrl, content);
             if (response.IsSuccessStatusCode)
             {
-                return await response.Content.ReadAsStringAsync();
+                var jsonResponse = await response.Content.ReadAsStringAsync();
+                var responseObject = JsonSerializer.Deserialize<JsonElement>(jsonResponse);
+
+                if (responseObject.TryGetProperty("response", out var responseValue))
+                {
+                    return responseValue.GetString();
+                }
+
+                throw new HttpRequestException("Invalid response format: 'response' key not found.");
             }
 
             throw new HttpRequestException($"Failed to generate response: {response.ReasonPhrase}");

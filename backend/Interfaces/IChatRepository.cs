@@ -4,10 +4,13 @@ namespace llmChat.Interfaces
 {
     public interface IChatRepository
     {
-        Task<ChatHistory?> GetChatHistoryAsync(Guid chatId);
-        Task SaveChatHistoryAsync(ChatHistory chatHistory);
-        Task<Character?> GetCharacterAsync(Guid characterId);
-        Task<List<Character>> GetCharactersByUserIdAsync(string userId);
-        Task SaveCharacterAsync(Character character);
+        Task<ChatHistory> CreateChatAsync(ChatHistory chat);
+        Task<ChatHistory?> GetChatByIdAsync(Guid chatId);
+        Task<ChatHistory?> GetChatWithMessagesAsync(Guid chatId);
+        Task AddMessageAsync(Message message);
+        Task UpdateMessageAsync(Message message);
+        Task DeleteChatAsync(Guid chatId);
+        Task<Message?> GetMessageByIdAsync(Guid messageId);
+        Task DeleteMessageAsync(Guid messageId);
     }
 }

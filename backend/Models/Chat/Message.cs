@@ -12,5 +12,8 @@ namespace llmChat.Models.Chat
 
         [JsonPropertyName("content")]
         public string Content { get; set; }
+        public Guid ChatHistoryId { get; set; }
+        [JsonIgnore]
+        public ChatHistory ChatHistory { get; set; }
     }
 }

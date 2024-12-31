@@ -10,6 +10,7 @@ namespace llmChat.Data
     {
         public DbSet<Character> Characters { get; set; }
         public DbSet<ChatHistory> ChatHistories { get; set; }
+        public DbSet<Message> Messages { get; set; }
         public ApplicationDBContext(DbContextOptions dbContextOptions)
             :base(dbContextOptions)
         {
@@ -57,7 +58,15 @@ namespace llmChat.Data
 
             builder.Entity<ChatHistory>()
                 .HasIndex(ch => new { ch.AppUserId, ch.CharacterId })
-                .IsUnique(); ;
+                .IsUnique();
+
+            builder.Entity<Message>()
+                .HasOne(m => m.ChatHistory)
+                .WithMany(ch => ch.Messages)
+                .HasForeignKey(m => m.ChatHistoryId)
+                .OnDelete(DeleteBehavior.Cascade);
+
+
         }
     }
 }
