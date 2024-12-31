@@ -61,6 +61,7 @@ builder.Services.AddHttpClient<IChatService, ChatService>();
 builder.Services.AddScoped<IChatRepository, ChatRepository>();
 builder.Services.AddScoped<IChatHistoryRepository, ChatHistoryRepository>();
 builder.Services.AddScoped<IChatHistoryService, ChatHistoryService>();
+builder.Services.AddScoped<ICharacterRepository, CharacterRepository>();
 
 
 builder.Services.AddControllers().AddNewtonsoftJson(options =>
