@@ -25,6 +25,7 @@ namespace llmChat.Repositories
         public async Task<ChatHistory?> GetChatByIdAsync(Guid chatId)
         {
             return await _dbContext.ChatHistories
+                .Include(ch => ch.Character)
                 .FirstOrDefaultAsync(c => c.Id == chatId);
         }
 
@@ -69,11 +70,18 @@ namespace llmChat.Repositories
         public async Task<ChatHistory?> GetChatWithMessagesAsync(Guid chatId)
         {
             return await _dbContext.ChatHistories
-                .Include(ch => ch.Messages)
+                .Include(ch => ch.Messages.OrderBy(m => m.SentAt))
                 .Include(ch => ch.Character)
                 .FirstOrDefaultAsync(ch => ch.Id == chatId);
         }
 
+        public async Task<List<ChatHistory>> GetChatsByUserIdAsync(string userId)
+        {
+            return await _dbContext.ChatHistories
+                .Include(ch => ch.Character)
+                .Where(c => c.AppUserId == userId)
+                .ToListAsync();
+        }
     }
 
 }

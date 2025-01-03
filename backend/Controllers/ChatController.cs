@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using llmChat.Mappers.Chat;
 using api.Extensions;
 using llmChat.Interfaces.Services;
+using llmChat.Mappers;
 
 namespace llmChat.Controllers
 {
@@ -46,7 +47,7 @@ namespace llmChat.Controllers
             var chat = createDto.ToEntity(appUser.Id);
             var createdChat = await _chatRepository.CreateChatAsync(chat);
 
-            return CreatedAtAction(nameof(GetChatById), new { chatId = createdChat.Id }, createdChat.ToDto());
+            return CreatedAtAction(nameof(GetChatById), new { chatId = createdChat.Id }, createdChat.ToDtoWithMessages());
 
         }
 
@@ -97,7 +98,7 @@ namespace llmChat.Controllers
             if (chat == null || chat.AppUserId != appUser.Id)
                 return NotFound("Chat not found");
 
-            return Ok(chat.ToDto());
+            return Ok(chat.ToDtoWithMessages());
         }
 
         [HttpPut("messages/{messageId}")]
@@ -132,6 +133,18 @@ namespace llmChat.Controllers
 
             await _chatRepository.DeleteChatAsync(chatId);
             return NoContent();
+        }
+        [HttpGet]
+        [Authorize]
+        public async Task<IActionResult> GetUserChats()
+        {
+            AppUser? appUser = await GetCurrentUser();
+            if (appUser == null)
+                return Unauthorized();
+
+            var chats = await _chatRepository.GetChatsByUserIdAsync(appUser.Id);
+            Console.WriteLine(chats);
+            return Ok(chats.Select(ChatMapper.ToNameOnlyDto));
         }
 
         [HttpDelete("messages/{messageId}")]

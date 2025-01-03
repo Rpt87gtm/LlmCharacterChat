@@ -14,12 +14,21 @@ namespace llmChat.Mappers.Chat
             };
         }
 
-        public static ChatResponseDto ToDto(this ChatHistory chat)
+        public static ChatResponseDto ToDtoWithMessages(this ChatHistory chat)
         {
             return new ChatResponseDto
             {
                 ChatId = chat.Id,
+                CharacterName = chat.Character.Name,
                 Messages = chat.Messages.Select(m => m.ToDto()).ToList()
+            };
+        }
+        public static ChatNameDto ToNameOnlyDto(this ChatHistory chat)
+        {
+            return new ChatNameDto
+            {
+                ChatId = chat.Id,
+                CharacterName = chat.Character.Name,
             };
         }
     }
