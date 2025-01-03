@@ -1,8 +1,9 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import { BaseRoutes } from '@/app/routers/BaseRoutes';
 import { AccountRoutes } from '@/app/routers/AccountRoutes';
+import { CharacterRoutes } from './CharacterRoutes';
 
-const routes = [...BaseRoutes, ...AccountRoutes];
+const routes = [...BaseRoutes, ...AccountRoutes, ...CharacterRoutes];
 
 
 
