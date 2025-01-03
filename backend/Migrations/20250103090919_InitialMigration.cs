@@ -236,8 +236,8 @@ namespace llmChat.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "51594206-7770-48d5-a4c9-4ea5491089c3", null, "User", "USER" },
-                    { "c48f3f63-fb55-4afd-b60d-b2915888d2f6", null, "Admin", "ADMIN" }
+                    { "46205e9b-8168-467b-b930-55e22f5587d1", null, "Admin", "ADMIN" },
+                    { "ace312ee-7259-49fe-8f08-666528c5ecfb", null, "User", "USER" }
                 });
 
             migrationBuilder.CreateIndex(
@@ -296,10 +296,9 @@ namespace llmChat.Migrations
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_ChatHistories_AppUserId_CharacterId",
+                name: "IX_ChatHistories_AppUserId",
                 table: "ChatHistories",
-                columns: new[] { "AppUserId", "CharacterId" },
-                unique: true);
+                column: "AppUserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ChatHistories_CharacterId",

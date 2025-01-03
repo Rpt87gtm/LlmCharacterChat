@@ -56,9 +56,7 @@ namespace llmChat.Data
                 .HasForeignKey(ch => ch.AppUserId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            builder.Entity<ChatHistory>()
-                .HasIndex(ch => new { ch.AppUserId, ch.CharacterId })
-                .IsUnique();
+           
 
             builder.Entity<Message>(entity =>
             {

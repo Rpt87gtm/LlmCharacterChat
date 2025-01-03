@@ -12,7 +12,7 @@ using llmChat.Data;
 namespace llmChat.Migrations
 {
     [DbContext(typeof(ApplicationDBContext))]
-    [Migration("20250103084640_InitialMigration")]
+    [Migration("20250103090919_InitialMigration")]
     partial class InitialMigration
     {
         /// <inheritdoc />
@@ -54,13 +54,13 @@ namespace llmChat.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "c48f3f63-fb55-4afd-b60d-b2915888d2f6",
+                            Id = "46205e9b-8168-467b-b930-55e22f5587d1",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "51594206-7770-48d5-a4c9-4ea5491089c3",
+                            Id = "ace312ee-7259-49fe-8f08-666528c5ecfb",
                             Name = "User",
                             NormalizedName = "USER"
                         });
@@ -285,10 +285,9 @@ namespace llmChat.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CharacterId");
+                    b.HasIndex("AppUserId");
 
-                    b.HasIndex("AppUserId", "CharacterId")
-                        .IsUnique();
+                    b.HasIndex("CharacterId");
 
                     b.ToTable("ChatHistories");
                 });
