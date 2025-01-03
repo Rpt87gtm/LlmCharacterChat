@@ -8,7 +8,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace llmChat.Migrations
 {
     /// <inheritdoc />
-    public partial class auth : Migration
+    public partial class InitialMigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -158,13 +158,86 @@ namespace llmChat.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "Characters",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    SystemPrompt = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CreatedByAppUserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    AppUserId = table.Column<string>(type: "nvarchar(450)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Characters", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Characters_AspNetUsers_AppUserId",
+                        column: x => x.AppUserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id");
+                    table.ForeignKey(
+                        name: "FK_Characters_AspNetUsers_CreatedByAppUserId",
+                        column: x => x.CreatedByAppUserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ChatHistories",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    CharacterId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    AppUserId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ChatHistories", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ChatHistories_AspNetUsers_AppUserId",
+                        column: x => x.AppUserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_ChatHistories_Characters_CharacterId",
+                        column: x => x.CharacterId,
+                        principalTable: "Characters",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Messages",
+                columns: table => new
+                {
+                    Id = table.Column<long>(type: "bigint", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Role = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Content = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    ChatHistoryId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    SentAt = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "GETUTCDATE()")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Messages", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Messages_ChatHistories_ChatHistoryId",
+                        column: x => x.ChatHistoryId,
+                        principalTable: "ChatHistories",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.InsertData(
                 table: "AspNetRoles",
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[,]
                 {
-                    { "776a1603-1484-44db-8425-6b99baeff4df", null, "Admin", "ADMIN" },
-                    { "c21f327b-0f6e-4f6e-b9e2-7be8f55f61c0", null, "User", "USER" }
+                    { "51594206-7770-48d5-a4c9-4ea5491089c3", null, "User", "USER" },
+                    { "c48f3f63-fb55-4afd-b60d-b2915888d2f6", null, "Admin", "ADMIN" }
                 });
 
             migrationBuilder.CreateIndex(
@@ -205,6 +278,38 @@ namespace llmChat.Migrations
                 column: "NormalizedUserName",
                 unique: true,
                 filter: "[NormalizedUserName] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Characters_AppUserId",
+                table: "Characters",
+                column: "AppUserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Characters_CreatedByAppUserId",
+                table: "Characters",
+                column: "CreatedByAppUserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Characters_Name_CreatedByAppUserId",
+                table: "Characters",
+                columns: new[] { "Name", "CreatedByAppUserId" },
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ChatHistories_AppUserId_CharacterId",
+                table: "ChatHistories",
+                columns: new[] { "AppUserId", "CharacterId" },
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ChatHistories_CharacterId",
+                table: "ChatHistories",
+                column: "CharacterId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Messages_ChatHistoryId",
+                table: "Messages",
+                column: "ChatHistoryId");
         }
 
         /// <inheritdoc />
@@ -226,7 +331,16 @@ namespace llmChat.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "Messages");
+
+            migrationBuilder.DropTable(
                 name: "AspNetRoles");
+
+            migrationBuilder.DropTable(
+                name: "ChatHistories");
+
+            migrationBuilder.DropTable(
+                name: "Characters");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");

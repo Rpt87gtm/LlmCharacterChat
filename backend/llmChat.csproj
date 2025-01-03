@@ -52,6 +52,7 @@
   <ItemGroup>
     <Folder Include="ChatModel\" />
     <Folder Include="Helpers\" />
+    <Folder Include="Migrations\" />
   </ItemGroup>
 
 </Project>

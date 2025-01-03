@@ -10,7 +10,7 @@ namespace llmChat.Interfaces
         Task AddMessageAsync(Message message);
         Task UpdateMessageAsync(Message message);
         Task DeleteChatAsync(Guid chatId);
-        Task<Message?> GetMessageByIdAsync(Guid messageId);
-        Task DeleteMessageAsync(Guid messageId);
+        Task<Message?> GetMessageByIdAsync(long messageId);
+        Task DeleteMessageAsync(long messageId);
     }
 }

@@ -60,7 +60,6 @@ namespace llmChat.Controllers
 
             var message = new Message
             {
-                Id = Guid.NewGuid(),
                 Role = messageDto.Role,
                 Content = messageDto.Content,
                 ChatHistoryId = messageDto.ChatId
@@ -75,7 +74,6 @@ namespace llmChat.Controllers
                 Console.WriteLine(responseContent);
                 var assistantMessage = new Message
                 {
-                    Id = Guid.NewGuid(),
                     Role = "assistant",
                     Content = responseContent,
                     ChatHistoryId = messageDto.ChatId
@@ -104,7 +102,7 @@ namespace llmChat.Controllers
 
         [HttpPut("messages/{messageId}")]
         [Authorize]
-        public async Task<IActionResult> UpdateMessage(Guid messageId, [FromBody] ChatMessageUpdateDto updateDto)
+        public async Task<IActionResult> UpdateMessage(long messageId, [FromBody] ChatMessageUpdateDto updateDto)
         {
             var message = await _chatRepository.GetMessageByIdAsync(messageId);
             if (message == null)
@@ -138,7 +136,7 @@ namespace llmChat.Controllers
 
         [HttpDelete("messages/{messageId}")]
         [Authorize]
-        public async Task<IActionResult> DeleteMessage(Guid messageId)
+        public async Task<IActionResult> DeleteMessage(long messageId)
         {
             var message = await _chatRepository.GetMessageByIdAsync(messageId);
             if (message == null)

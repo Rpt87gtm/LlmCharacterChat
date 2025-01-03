@@ -5,7 +5,7 @@ namespace llmChat.Models.Chat
     public class Message
     {
         [JsonPropertyName("id")]
-        public Guid Id { get; set; }
+        public long Id { get; set; }
 
         [JsonPropertyName("role")]
         public string Role { get; set; }
@@ -15,5 +15,7 @@ namespace llmChat.Models.Chat
         public Guid ChatHistoryId { get; set; }
         [JsonIgnore]
         public ChatHistory ChatHistory { get; set; }
+        public DateTime SentAt { get; set; }
+  
     }
 }

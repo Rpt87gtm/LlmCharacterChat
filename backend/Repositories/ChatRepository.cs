@@ -30,6 +30,7 @@ namespace llmChat.Repositories
 
         public async Task AddMessageAsync(Message message)
         {
+            message.SentAt = DateTime.UtcNow;
             _dbContext.Messages.Add(message);
             await _dbContext.SaveChangesAsync();
         }
@@ -50,12 +51,12 @@ namespace llmChat.Repositories
             }
         }
 
-        public async Task<Message?> GetMessageByIdAsync(Guid messageId)
+        public async Task<Message?> GetMessageByIdAsync(long messageId)
         {
             return await _dbContext.Messages.FirstOrDefaultAsync(m => m.Id == messageId);
         }
 
-        public async Task DeleteMessageAsync(Guid messageId)
+        public async Task DeleteMessageAsync(long messageId)
         {
             var message = await GetMessageByIdAsync(messageId);
             if (message != null)

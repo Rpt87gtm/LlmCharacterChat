@@ -12,7 +12,8 @@ namespace llmChat.Mappers.Chat
                 Id = message.Id,
                 Role = message.Role,
                 Content = message.Content,
-                ChatHistoryId = message.ChatHistoryId
+                ChatHistoryId = message.ChatHistoryId,
+                SentAt = message.SentAt,
             };
         }
 
@@ -23,7 +24,8 @@ namespace llmChat.Mappers.Chat
                 Id = dto.Id,
                 Role = dto.Role,
                 Content = dto.Content,
-                ChatHistoryId = dto.ChatHistoryId
+                ChatHistoryId = dto.ChatHistoryId,
+                SentAt = dto.SentAt,
             };
         }
     }

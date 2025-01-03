@@ -60,11 +60,23 @@ namespace llmChat.Data
                 .HasIndex(ch => new { ch.AppUserId, ch.CharacterId })
                 .IsUnique();
 
-            builder.Entity<Message>()
-                .HasOne(m => m.ChatHistory)
-                .WithMany(ch => ch.Messages)
-                .HasForeignKey(m => m.ChatHistoryId)
-                .OnDelete(DeleteBehavior.Cascade);
+            builder.Entity<Message>(entity =>
+            {
+                entity.Property(m => m.Id)
+                      .ValueGeneratedOnAdd();
+
+                entity.Property(m => m.ChatHistoryId)
+                      .IsRequired(); 
+
+                entity.Property(m => m.SentAt)
+                      .HasDefaultValueSql("GETUTCDATE()")
+                      .IsRequired();
+
+                entity.HasOne(m => m.ChatHistory)
+                      .WithMany(ch => ch.Messages)
+                      .HasForeignKey(m => m.ChatHistoryId)
+                      .OnDelete(DeleteBehavior.Cascade);
+            });
 
 
         }

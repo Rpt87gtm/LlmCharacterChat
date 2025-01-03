@@ -51,13 +51,13 @@ namespace llmChat.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "e1f584b9-1eeb-400f-8a37-53ee795ab76d",
+                            Id = "c48f3f63-fb55-4afd-b60d-b2915888d2f6",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         },
                         new
                         {
-                            Id = "e8f7e206-89ff-4bb6-b63d-7b9c27b1d907",
+                            Id = "51594206-7770-48d5-a4c9-4ea5491089c3",
                             Name = "User",
                             NormalizedName = "USER"
                         });
@@ -292,10 +292,12 @@ namespace llmChat.Migrations
 
             modelBuilder.Entity("llmChat.Models.Chat.Message", b =>
                 {
-                    b.Property<Guid>("Id")
+                    b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier")
+                        .HasColumnType("bigint")
                         .HasAnnotation("Relational:JsonPropertyName", "id");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<long>("Id"));
 
                     b.Property<Guid>("ChatHistoryId")
                         .HasColumnType("uniqueidentifier");
@@ -309,6 +311,11 @@ namespace llmChat.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)")
                         .HasAnnotation("Relational:JsonPropertyName", "role");
+
+                    b.Property<DateTime>("SentAt")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETUTCDATE()");
 
                     b.HasKey("Id");
 
