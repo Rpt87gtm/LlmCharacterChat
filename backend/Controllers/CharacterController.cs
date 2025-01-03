@@ -1,6 +1,8 @@
 ﻿using api.Extensions;
 using api.Models.User;
 using llmChat.Dtos.Chat;
+using llmChat.Helpers;
+using llmChat.Helpers.Pagination;
 using llmChat.Interfaces.Repository;
 using llmChat.Mappers;
 using llmChat.Models.Chat;
@@ -56,7 +58,18 @@ namespace llmChat.Controllers
             return Ok(character.ToDto());
         }
 
-        [HttpGet]
+        [HttpGet("GetAllCharacters")]
+        [Authorize]
+        public async Task<IActionResult> GetAll([FromQuery] CharacterQuery characterQuery, [FromQuery] QueryPage queryPage)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest();
+
+            var characters = await _characterRepository.GetAllAsync(characterQuery, queryPage);
+            return Ok(characters.Select(CharacterMapper.ToDto));
+        }
+
+        [HttpGet("GetUserCharacters")]
         [Authorize]
         public async Task<IActionResult> GetUserCharacters()
         {
