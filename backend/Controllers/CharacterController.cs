@@ -33,6 +33,7 @@ namespace llmChat.Controllers
             AppUser? appUser = await GetCurrentUser();
             if (appUser == null)
                 return Unauthorized();
+            Console.WriteLine(createDto);
 
             Character character = createDto.ToEntity(appUser.Id);
             Character createdCharacter = await _characterRepository.CreateAsync(character);

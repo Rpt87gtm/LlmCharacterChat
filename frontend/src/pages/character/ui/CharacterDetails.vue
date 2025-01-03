@@ -1,8 +1,8 @@
 <template>
     <div>
       <h1>{{ character.name }}</h1>
-      <p>{{ character.description }}</p>
-      <button @click="deleteCharacter">Delete</button>
+      <p>{{ character.systemPrompt }}</p>
+      <button @click="handleDeleteCharacter">Delete</button>
     </div>
   </template>
   
@@ -16,18 +16,18 @@
     setup() {
       const route = useRoute();
       const router = useRouter();
-      const character = ref(null);
+      const character = ref({ name: '', systemPrompt: '' });
   
       onMounted(async () => {
         character.value = await fetchCharacterById(route.params.id as string);
       });
   
-      const deleteCharacter = async () => {
+      const handleDeleteCharacter  = async () => {
         await deleteCharacter(route.params.id as string);
         router.push("/characters");
       };
   
-      return { character, deleteCharacter };
+      return { character, handleDeleteCharacter };
     },
   };
   </script>

@@ -17,7 +17,7 @@
   export default {
     name: "CharacterList",
     setup() {  
-      const characters = ref([]);
+      const characters = ref([{ name: '', id: '' }]);
       
       onMounted(async () => {
         characters.value = await fetchCharacters();

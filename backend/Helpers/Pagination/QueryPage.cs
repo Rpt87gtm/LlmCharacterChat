@@ -8,6 +8,6 @@ namespace llmChat.Helpers.Pagination
         public int PageNumber { get; set; } = 1;
 
         [Range(1, 100)]
-        public int PageSize { get; set; } = 2;
+        public int PageSize { get; set; } = 10;
     }
 }

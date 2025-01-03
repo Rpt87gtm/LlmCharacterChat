@@ -1,4 +1,4 @@
-import apiClient from './index';  
+import apiClient from '@/shared/api';  
 
 const API_URL = "http://localhost:5190/api/characters";
 

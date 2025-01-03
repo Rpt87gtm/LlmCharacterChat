@@ -3,12 +3,12 @@
       <h1>Create Character</h1>
       <form @submit.prevent="createNewCharacter">
         <div>
-          <label for="name">Name</label>
-          <input v-model="form.name" id="name" required />
+          <label for="Name">Name</label>
+          <input v-model="form.Name" id="Name" required />
         </div>
         <div>
-          <label for="description">Description</label>
-          <textarea v-model="form.description" id="description" required></textarea>
+          <label for="SystemPrompt">SystemPrompt</label>
+          <textarea v-model="form.SystemPrompt" id="SystemPrompt" required></textarea>
         </div>
         <button type="submit">Create</button>
       </form>
@@ -24,7 +24,7 @@
     name: "CharacterCreate",
     setup() {
       const router = useRouter();
-      const form = ref({ name: "", description: "" });
+      const form = ref({ Name: "", SystemPrompt: "" });
   
       const createNewCharacter = async () => {
         await createCharacter(form.value);
