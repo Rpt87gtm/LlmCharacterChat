@@ -46,13 +46,13 @@ namespace llmChat.Repositories
             await _context.SaveChangesAsync();
         }
 
-        public async Task<List<Character>> GetAllAsync(CharacterQuery characterQuery, QueryPage queryPage)
+        public async Task<(List<Character>,int)> GetAllAsync(CharacterQuery characterQuery, QueryPage queryPage)
         {
             var characters = _context.Characters.AsQueryable();
             characters = UseQueryParameters(characters, characterQuery);
+            int totalCount = await characters.CountAsync();
             characters = _paginator.Paginate(characters, queryPage);
-
-            return await characters.ToListAsync();
+            return (await characters.ToListAsync(), totalCount);
         }
         private IQueryable<Character> UseQueryParameters(IQueryable<Character> character, CharacterQuery characterQuery)
         {
@@ -66,7 +66,7 @@ namespace llmChat.Repositories
             {
                 if (characterQuery.SortBy.Equals("Name", StringComparison.OrdinalIgnoreCase))
                 {
-                    updatedCharacter = characterQuery.IdDecsending ? updatedCharacter.OrderByDescending(ch => ch.Name) : updatedCharacter.OrderBy(ch => ch.Name);
+                    updatedCharacter = characterQuery.IsDescending ? updatedCharacter.OrderByDescending(ch => ch.Name) : updatedCharacter.OrderBy(ch => ch.Name);
                 }
             }
             return updatedCharacter;

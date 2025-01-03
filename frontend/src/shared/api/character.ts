@@ -2,8 +2,38 @@ import apiClient from '@/shared/api';
 
 const API_URL = "http://localhost:5190/api/characters";
 
-export const fetchCharacters = async (params = {}) => {
-  const response = await apiClient.get(`${API_URL}/GetAllCharacters`, { params });
+export interface Character {
+  Id: string;
+  Name: string;
+  SystemPrompt: string;
+}
+
+interface CharacterQuery {
+  Name?: string;
+  SortBy?: string;
+  IsDescending?: boolean;
+}
+
+interface QueryPage {
+  PageNumber: number;
+  PageSize: number;
+}
+interface PaginatedResponse {
+  data: Character[];
+  totalCount: number;
+  pageNumber: number;
+  pageSize: number;
+}
+export const fetchCharacters = async (
+  characterQuery: CharacterQuery = {},
+  queryPage: QueryPage = { PageNumber: 1, PageSize: 10 }
+): Promise<PaginatedResponse> => {
+  const response = await apiClient.get(`${API_URL}/GetAllCharacters`, {
+    params: {
+      ...characterQuery,
+      ...queryPage,
+    },
+  });
   return response.data;
 };
 

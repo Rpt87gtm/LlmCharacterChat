@@ -66,8 +66,14 @@ namespace llmChat.Controllers
             if (!ModelState.IsValid)
                 return BadRequest();
 
-            var characters = await _characterRepository.GetAllAsync(characterQuery, queryPage);
-            return Ok(characters.Select(CharacterMapper.ToDto));
+            var (characters, totalCount) = await _characterRepository.GetAllAsync(characterQuery, queryPage);
+            return Ok(new
+            {
+                Data = characters.Select(CharacterMapper.ToDto),
+                TotalCount = totalCount,
+                PageNumber = queryPage.PageNumber,
+                PageSize = queryPage.PageSize,
+            });
         }
 
         [HttpGet("GetUserCharacters")]

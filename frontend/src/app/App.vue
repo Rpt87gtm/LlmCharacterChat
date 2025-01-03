@@ -1,8 +1,10 @@
 
 <template>
-  <div>
-    <AppHeader/>
-    <router-view />
+  <div id="app">
+    <AppHeader v-if="showHeader" />
+    <div class="main-content">
+      <router-view />
+    </div>
   </div>
 </template>
 
@@ -35,5 +37,6 @@ export default {
   flex-direction: column;
   min-height: 100vh;
   padding-top: 60px; /* Высота хедера + отступ */
+  width: 100%;
 }
 </style>

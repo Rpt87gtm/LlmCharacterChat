@@ -6,6 +6,6 @@
 
         public string? SortBy { get; set; } = null;
 
-        public bool IdDecsending { get; set; } = false;
+        public bool IsDescending { get; set; } = false;
     }
 }

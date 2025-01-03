@@ -40,6 +40,7 @@
     z-index: 1000;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
     width: 100%;
+    height: 152px;
   }
   .logout-button {
     
@@ -56,5 +57,6 @@
   padding-right: 2rem;
   color: #7D221F; 
   background-color: #D33935; 
+  height: 120px;
 }
   </style>
