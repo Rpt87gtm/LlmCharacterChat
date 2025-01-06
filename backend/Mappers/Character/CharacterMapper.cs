@@ -5,13 +5,25 @@ namespace llmChat.Mappers
 {
     public static class CharacterMapper
     {
+        public static CharacterDto ToDtoWithoutCreator(this Character character)
+        {
+            return new CharacterDto
+            {
+                Id = character.Id,
+                Name = character.Name,
+                SystemPrompt = character.SystemPrompt,
+            };
+        }
+
         public static CharacterDto ToDto(this Character character)
         {
             return new CharacterDto
             {
                 Id = character.Id,
                 Name = character.Name,
-                SystemPrompt = character.SystemPrompt
+                SystemPrompt = character.SystemPrompt,
+                CreatedByAppUserId = character.CreatedByAppUserId,
+                CreatedByAppUserName = character.CreatedByAppUser.UserName,
             };
         }
 

@@ -50,3 +50,7 @@ export const createCharacter = async (characterData: any) => {
 export const deleteCharacter = async (id: string) => {
   await apiClient.delete(`${API_URL}/${id}`);
 };
+export const updateCharacter = async (id: string, characterData: any) => {
+  const response = await apiClient.put(`${API_URL}/${id}`, characterData);
+  return response.data;
+};

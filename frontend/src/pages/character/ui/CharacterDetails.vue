@@ -1,43 +1,68 @@
 <template>
   <div class="character-details-container">
-      <button @click="goBack" class="back-button">Назад</button>
-      <div class="character-details-content">
-          <h1>{{ character.name }}</h1>
-          <p>{{ character.systemPrompt }}</p>
-          <button @click="handleDeleteCharacter">Delete</button>
+    <button @click="goBack" class="back-button">Назад</button>
+    <div class="character-details-content">
+      <h1>{{ character.name }}</h1>
+      <p>{{ character.systemPrompt }}</p>
+      <p>Создатель: {{ character.createdByAppUserName }}</p>
+
+      <!-- Кнопки отображаются только для создателя -->
+      <div v-if="isCreator">
+        <button @click="editCharacter">Edit</button>
+        <button @click="handleDeleteCharacter">Delete</button>
       </div>
+    </div>
   </div>
 </template>
 
 <script lang="ts">
 import { fetchCharacterById, deleteCharacter } from "@/shared/api/character";
 import { useRoute, useRouter } from "vue-router";
-import { ref, onMounted } from "vue";
+import { ref, onMounted, computed } from "vue";
+import { getUserIdFromToken } from "@/shared/utils/auth/auth";
 
 export default {
   name: "CharacterDetails",
   setup() {
-      const route = useRoute();
-      const router = useRouter();
-      const character = ref({ name: '', systemPrompt: '' });
+    const route = useRoute();
+    const router = useRouter();
+    const currentUserId = ref(getUserIdFromToken()); 
+    const character = ref({
+      name: "",
+      systemPrompt: "",
+      createdByAppUserId: "",
+      createdByAppUserName: "",
+    });
 
-      onMounted(async () => {
-          character.value = await fetchCharacterById(route.params.id as string);
-      });
+    
 
-      const handleDeleteCharacter = async () => {
-          await deleteCharacter(route.params.id as string);
-          router.push("/characters");
-      };
+    onMounted(async () => {
+      const fetchedCharacter = await fetchCharacterById(route.params.id as string);
+      character.value = fetchedCharacter;
+    });
 
-      const goBack = () => {
-          router.go(-1); 
-      };
+    const isCreator = computed(() => {
+      return character.value.createdByAppUserId === currentUserId.value;
+    });
 
-      return { character, handleDeleteCharacter, goBack };
+    const editCharacter = () => {
+      router.push(`/characters/edit/${route.params.id}`);
+    };
+
+    const handleDeleteCharacter = async () => {
+      await deleteCharacter(route.params.id as string);
+      router.push("/characters");
+    };
+
+    const goBack = () => {
+      router.go(-1);
+    };
+
+    return { character, isCreator, editCharacter, handleDeleteCharacter, goBack };
   },
 };
 </script>
+
 
 <style scoped>
 .character-details-container {

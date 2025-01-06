@@ -85,7 +85,7 @@ namespace llmChat.Controllers
                 return Unauthorized();
 
             var characters = await _characterRepository.GetByUserIdAsync(appUser.Id);
-            return Ok(characters.Select(CharacterMapper.ToDto));
+            return Ok(characters.Select(CharacterMapper.ToDtoWithoutCreator));
         }
 
         [HttpPut("{id}")]
@@ -107,7 +107,7 @@ namespace llmChat.Controllers
             character.UpdateEntity(updateDto);
             await _characterRepository.UpdateAsync(character);
 
-            return Ok(character.ToDto());
+            return Ok(character.ToDtoWithoutCreator());
         }
 
         [HttpDelete("{id}")]

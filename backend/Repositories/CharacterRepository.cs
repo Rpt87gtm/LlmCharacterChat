@@ -48,7 +48,7 @@ namespace llmChat.Repositories
 
         public async Task<(List<Character>,int)> GetAllAsync(CharacterQuery characterQuery, QueryPage queryPage)
         {
-            var characters = _context.Characters.AsQueryable();
+            var characters = _context.Characters.Include(user => user.CreatedByAppUser).AsQueryable();
             characters = UseQueryParameters(characters, characterQuery);
             int totalCount = await characters.CountAsync();
             characters = _paginator.Paginate(characters, queryPage);
