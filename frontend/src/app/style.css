@@ -62,8 +62,7 @@ button:focus-visible {
 #app {
   width: 100%; 
   display: flex;
-  justify-content: center;
-  align-items: center;
+
   margin: 2rem;
   padding: 1rem;
   text-align: center;
@@ -82,4 +81,5 @@ button:focus-visible {
     background-color: #6C0300;
     color: #A60400;
   }
+  
 }

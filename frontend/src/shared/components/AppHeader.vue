@@ -1,11 +1,16 @@
 <template>
-    <header class="header">
-        <div id="header-conent">
-            <h1>LLM Chat</h1>
-            <LogoutButton  class="logout-button" v-if="showHeader" />   
-        </div>
-    </header>
-  </template>
+  <header class="header">
+      <div id="header-conent">
+        <h1>LLM Chat</h1>
+          <div class="left-section">
+              <RouterLink to="/characters" class="button" v-if="showHeader">Characters</RouterLink>
+          </div>
+          <div class="right-section">
+              <LogoutButton class="logout-button" v-if="showHeader" />
+          </div>
+      </div>
+  </header>
+</template>
   
   <script lang="ts">
   import LogoutButton from './LogoutButton.vue';
@@ -44,7 +49,7 @@
   }
   .logout-button {
     
-    margin-right: 2rem; /* Добавляем отступ справа */
+    margin-right: 2rem; 
 }
 #header-conent {
   display: flex;
@@ -58,5 +63,29 @@
   color: #7D221F; 
   background-color: #D33935; 
   height: 120px;
+}
+.button {
+    border-radius: 8px;
+    border: 1px solid transparent;
+    padding: 0.6em 1.2em;
+    
+    margin-left: 2rem; 
+    font-size: 1em;
+    font-weight: 500;
+    font-family: inherit;
+    background-color: #6C0300;
+    cursor: pointer;
+    transition: border-color 0.25s, background-color 0.25s, color 0.25s;
+    color: #A60400;
+    text-decoration: none;
+}
+.button:hover {
+  background-color: #A60400;
+  color: #6C0300;
+}
+.left-section {
+    display: flex;
+    align-items: center;
+    margin-right: auto; 
 }
   </style>

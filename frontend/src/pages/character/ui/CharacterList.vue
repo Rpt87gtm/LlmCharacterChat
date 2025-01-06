@@ -62,7 +62,7 @@ export default defineComponent({
     const characters = ref<Character[]>([]);
     const totalCount = ref(0);
     const pagination = ref<QueryPage>({ PageNumber: 1, PageSize: 10 });
-    const filters = ref<CharacterQuery>({});
+    const filters = ref<CharacterQuery>({SortBy: "",});
 
     const totalPages = computed(() => Math.ceil(totalCount.value / pagination.value.PageSize));
 
