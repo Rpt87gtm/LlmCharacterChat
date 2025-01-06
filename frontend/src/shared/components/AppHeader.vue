@@ -2,9 +2,10 @@
   <header class="header">
       <div id="header-conent">
         <h1>LLM Chat</h1>
-          <div class="left-section">
-              <RouterLink to="/characters" class="button" v-if="showHeader">Characters</RouterLink>
-          </div>
+        <div class="left-section">
+          <RouterLink to="/characters" style="margin-left: 2rem;" class="button" v-if="showHeader">Characters</RouterLink>
+          <RouterLink to="/chats" class="button" v-if="showHeader">Chats</RouterLink>
+        </div>
           <div class="right-section">
               <LogoutButton class="logout-button" v-if="showHeader" />
           </div>
@@ -69,7 +70,7 @@
     border: 1px solid transparent;
     padding: 0.6em 1.2em;
     
-    margin-left: 2rem; 
+    margin-left: 1rem; 
     font-size: 1em;
     font-weight: 500;
     font-family: inherit;

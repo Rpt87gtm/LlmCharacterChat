@@ -1,6 +1,7 @@
 import apiClient from '@/shared/api';  
+import { SERVER_API_URL } from './apiClient';
 
-const API_URL = "http://localhost:5190/api/characters";
+const API_URL = `${SERVER_API_URL}/characters`;
 
 export interface Character {
   Id: string;

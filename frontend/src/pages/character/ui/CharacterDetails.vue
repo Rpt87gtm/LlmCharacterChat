@@ -11,12 +11,18 @@
         <button @click="editCharacter">Edit</button>
         <button @click="handleDeleteCharacter">Delete</button>
       </div>
+
+      <!-- Кнопка для создания чата -->
+      <button @click="createChatHandler" class="create-chat-button">
+        Create Chat
+      </button>
     </div>
   </div>
 </template>
 
 <script lang="ts">
 import { fetchCharacterById, deleteCharacter } from "@/shared/api/character";
+import { createChat } from "@/shared/api/chat/createChat";
 import { useRoute, useRouter } from "vue-router";
 import { ref, onMounted, computed } from "vue";
 import { getUserIdFromToken } from "@/shared/utils/auth/auth";
@@ -26,15 +32,13 @@ export default {
   setup() {
     const route = useRoute();
     const router = useRouter();
-    const currentUserId = ref(getUserIdFromToken()); 
+    const currentUserId = ref(getUserIdFromToken());
     const character = ref({
       name: "",
       systemPrompt: "",
       createdByAppUserId: "",
       createdByAppUserName: "",
     });
-
-    
 
     onMounted(async () => {
       const fetchedCharacter = await fetchCharacterById(route.params.id as string);
@@ -58,11 +62,28 @@ export default {
       router.go(-1);
     };
 
-    return { character, isCreator, editCharacter, handleDeleteCharacter, goBack };
+    // Обработчик для создания чата
+    const createChatHandler = async () => {
+      try {
+        const requestData = { characterId: route.params.id as string }; // Используем characterId из route
+        const chat = await createChat(requestData); // Создаем чат
+        router.push(`/chats/${chat.chatId}`); // Переходим на страницу чата
+      } catch (error) {
+        console.error("Error creating chat:", error);
+      }
+    };
+
+    return {
+      character,
+      isCreator,
+      editCharacter,
+      handleDeleteCharacter,
+      goBack,
+      createChatHandler, // Возвращаем метод для использования в шаблоне
+    };
   },
 };
 </script>
-
 
 <style scoped>
 .character-details-container {
@@ -77,8 +98,8 @@ export default {
   top: 1rem;
   left: 1rem;
   padding: 0.5rem 1rem;
-  background-color: #6C0300;
-  color: #A60400;
+  background-color: #6c0300;
+  color: #a60400;
   border: none;
   border-radius: 4px;
   cursor: pointer;
@@ -88,8 +109,8 @@ export default {
 }
 
 .back-button:hover {
-  background-color: #A60400;
-  color: #6C0300;
+  background-color: #a60400;
+  color: #6c0300;
 }
 
 .character-details-content {
@@ -97,5 +118,20 @@ export default {
   width: 100%;
   max-width: none;
   padding: 0 1rem;
+}
+
+.create-chat-button {
+  margin-top: 1rem;
+  padding: 0.5rem 1rem;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.create-chat-button:hover {
+  background-color: #0056b3;
 }
 </style>

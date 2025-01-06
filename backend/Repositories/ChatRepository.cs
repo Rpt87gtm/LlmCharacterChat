@@ -19,6 +19,8 @@ namespace llmChat.Repositories
         {
             _dbContext.ChatHistories.Add(chat);
             await _dbContext.SaveChangesAsync();
+            await _dbContext.Entry(chat).Reference(ch => ch.Character).LoadAsync();
+
             return chat;
         }
 

@@ -12,9 +12,11 @@ class Message(BaseModel):
     role: str  
     content: str
 
+
 class ChatRequest(BaseModel):
     messages: List[Message]
-    streaming: bool = False  
+    system_prompt: str
+    streaming: bool = False
 
 class TokenStreamQueue:
     def __init__(self):
@@ -41,9 +43,7 @@ async def shutdown_model():
     print("Модель выгружена!")
 
 
-async def generate_response(messages: List[Message], queue: TokenStreamQueue = None):
-
-    system_prompt = "You are a helpful assistant Emily."                          #TODO Add in ChatRequest
+async def generate_response(messages: List[Message], system_prompt: str, queue: TokenStreamQueue = None):
     history = [{"role": "system", "content": system_prompt}] + [msg.dict() for msg in messages[:-1]]
     userMessage = messages[-1].content
 
@@ -72,7 +72,7 @@ async def chat(request: ChatRequest):
     if request.streaming:
         return HTTPException(status_code=400, detail="Используйте WebSocket для стриминга токенов")
 
-    response = await generate_response(request.messages)
+    response = await generate_response(request.messages, request.system_prompt)
     return {"response": response}
 
 

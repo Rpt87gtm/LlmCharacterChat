@@ -59,21 +59,24 @@ namespace llmChat.Controllers
             if (chat == null)
                 return NotFound("Chat not found.");
 
-            var message = new Message
+            var userMessage = new Message
             {
                 Role = messageDto.Role,
                 Content = messageDto.Content,
                 ChatHistoryId = messageDto.ChatId
             };
 
-            await _chatRepository.AddMessageAsync(message);
+            await _chatRepository.AddMessageAsync(userMessage);
 
-            if (message.Role == "user")
+            Message? assistantMessage = null;
+
+            
+            if (messageDto.Role == "user")
             {
                 Console.WriteLine("Start generate");
                 var responseContent = await _chatService.GenerateResponse(chat.Messages, chat.Character);
                 Console.WriteLine(responseContent);
-                var assistantMessage = new Message
+                assistantMessage = new Message
                 {
                     Role = "assistant",
                     Content = responseContent,
@@ -82,8 +85,13 @@ namespace llmChat.Controllers
                 await _chatRepository.AddMessageAsync(assistantMessage);
             }
 
-            return Ok(message.ToDto());
+            return Ok(new
+            {
+                UserMessage = userMessage.ToDto(),
+                AssistantMessage = assistantMessage?.ToDto()
+            });
         }
+
 
 
         [HttpGet("{chatId}")]
