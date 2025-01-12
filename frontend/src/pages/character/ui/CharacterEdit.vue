@@ -1,6 +1,6 @@
 <template>
     <div class="character-edit-container">
-      <button @click="goBack" class="back-button">Назад</button>
+      <BackButton/>
       <h1>Edit Character</h1>
       <form @submit.prevent="handleUpdateCharacter">
         <div>
@@ -20,9 +20,13 @@
   import { ref, onMounted } from "vue";
   import { useRoute, useRouter } from "vue-router";
   import { fetchCharacterById, updateCharacter } from "@/shared/api/character";
+  import  BackButton from "@/shared/components/BackButton/ui";
   
   export default {
     name: "CharacterEdit",
+    components: {
+    BackButton, 
+  },
     setup() {
       const route = useRoute();
       const router = useRouter();
@@ -43,12 +47,7 @@
           console.error("ID is missing");
         }
       };
-  
-      const goBack = () => {
-        router.go(-1);
-      };
-  
-      return { form, handleUpdateCharacter, goBack };
+      return { form, handleUpdateCharacter };
     },
   };
   </script>
@@ -61,22 +60,4 @@
     max-width: none;
   }
   
-  .back-button {
-    position: absolute;
-    top: 1rem;
-    left: 1rem;
-    padding: 0.5rem 1rem;
-    background-color: #6C0300;
-    color: #A60400;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 1rem;
-    transition: background-color 0.3s ease;
-    z-index: 10;
-  }
-  
-  .back-button:hover {
-    background-color: #A60400;
-  }
   </style>
