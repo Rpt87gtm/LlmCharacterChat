@@ -28,4 +28,24 @@ jobs:
 
       - name: Run frontend tests
         run: npm test
-        working-directory: ./frontend  
+        working-directory: ./frontend 
+        
+  test-backend:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '8.0.x' 
+
+      - name: Restore dependencies
+        run: dotnet restore
+        working-directory: ./backend  
+
+      - name: Run backend tests
+        run: dotnet test
+        working-directory: ./llmChatTests  
