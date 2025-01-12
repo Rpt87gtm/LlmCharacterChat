@@ -1,6 +1,6 @@
 <template>
   <div class="character-create-container">
-    <button @click="goBack" class="back-button">Назад</button>
+    <BackButton/>
     <h1>Create Character</h1>
     <form @submit.prevent="createNewCharacter">
       <div>
@@ -20,9 +20,13 @@
 import { createCharacter } from "@/shared/api/character";
 import { ref } from "vue";
 import { useRouter } from "vue-router";
+import  BackButton from "@/shared/components/BackButton/ui";
 
 export default {
   name: "CharacterCreate",
+  components: {
+    BackButton, 
+  },
   setup() {
     const router = useRouter();
     const form = ref({ Name: "", SystemPrompt: "" });
@@ -31,12 +35,7 @@ export default {
       await createCharacter(form.value);
       router.push("/characters");
     };
-
-    const goBack = () => {
-      router.go(-1);
-    };
-
-    return { form, createNewCharacter, goBack };
+    return { form, createNewCharacter };
   },
 };
 </script>
@@ -49,24 +48,6 @@ export default {
   margin-top: 30px;
   border-radius: 8px;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-}
-
-.back-button {
-  position: absolute;
-  top: 1rem;
-  left: 1rem;
-  padding: 0.5rem 1rem;
-  background-color: #6C0300;
-  border: none;
-  border-radius: 4px;
-  cursor: pointer;
-  font-size: 1rem;
-  transition: background-color 0.3s ease;
-  z-index: 10;
-}
-
-.back-button:hover {
-  background-color: #A60400;
 }
 
 h1 {
