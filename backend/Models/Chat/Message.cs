@@ -16,6 +16,6 @@ namespace llmChat.Models.Chat
         [JsonIgnore]
         public ChatHistory ChatHistory { get; set; }
         public DateTime SentAt { get; set; }
-  
+
     }
 }

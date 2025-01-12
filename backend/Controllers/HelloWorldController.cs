@@ -1,7 +1,5 @@
-﻿using llmChat.Data;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace llmChat.Controllers
 {
@@ -9,7 +7,7 @@ namespace llmChat.Controllers
     [Route("/helloWorld")]
     public class HelloWorldController : ControllerBase
     {
-    
+
 
         public HelloWorldController()
         {

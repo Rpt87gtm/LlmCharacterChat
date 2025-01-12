@@ -11,8 +11,7 @@
 
 <script lang="ts">
 import { defineComponent, ref, onMounted } from "vue";
-import { fetchUserChats } from "../api/chat/fetchUserChats";
-import { ChatSummary } from "../api/chat/fetchUserChats";
+import { fetchUserChats, ChatSummary } from "@shared/api/chat/fetchUserChats";
 
 export default defineComponent({
   setup() {

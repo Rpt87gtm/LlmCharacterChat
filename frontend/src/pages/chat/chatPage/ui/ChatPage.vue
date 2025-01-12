@@ -5,7 +5,7 @@
   </template>
   
   <script>
-  import ChatDetails from '@/shared/ui/ChatDetails.vue';
+  import ChatDetails from '@/pages/chat/chatPage/ui/ChatDetails.vue';
   
   export default {
     components: { ChatDetails },

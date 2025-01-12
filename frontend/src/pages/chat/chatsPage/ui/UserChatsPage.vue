@@ -6,7 +6,7 @@
   </template>
   
   <script>
-  import ChatList from '@/shared/ui/ChatList.vue';
+  import ChatList from '@/pages/chat/chatsPage/ui/ChatList.vue';
   
   export default {
     components: { ChatList },

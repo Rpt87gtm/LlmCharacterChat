@@ -1,6 +1,4 @@
-﻿using llmChat.Models.Chat;
-
-namespace llmChat.Dtos.Chat
+﻿namespace llmChat.Dtos.Chat
 {
     public class ChatResponseDto
     {

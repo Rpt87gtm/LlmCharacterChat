@@ -12,9 +12,9 @@ namespace llmChat.Data
         public DbSet<ChatHistory> ChatHistories { get; set; }
         public DbSet<Message> Messages { get; set; }
         public ApplicationDBContext(DbContextOptions dbContextOptions)
-            :base(dbContextOptions)
+            : base(dbContextOptions)
         {
-            
+
         }
 
         protected override void OnModelCreating(ModelBuilder builder)
@@ -56,7 +56,7 @@ namespace llmChat.Data
                 .HasForeignKey(ch => ch.AppUserId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-           
+
 
             builder.Entity<Message>(entity =>
             {
@@ -64,7 +64,7 @@ namespace llmChat.Data
                       .ValueGeneratedOnAdd();
 
                 entity.Property(m => m.ChatHistoryId)
-                      .IsRequired(); 
+                      .IsRequired();
 
                 entity.Property(m => m.SentAt)
                       .HasDefaultValueSql("GETUTCDATE()")

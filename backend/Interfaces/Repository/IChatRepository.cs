@@ -1,13 +1,13 @@
 ﻿using llmChat.Models.Chat;
 
-namespace llmChat.Interfaces
+namespace llmChat.Interfaces.Repository
 {
     public interface IChatRepository
     {
         Task<ChatHistory> CreateChatAsync(ChatHistory chat);
         Task<ChatHistory?> GetChatByIdAsync(Guid chatId);
         Task<ChatHistory?> GetChatWithMessagesAsync(Guid chatId);
-        Task<List<ChatHistory>> GetChatsByUserIdAsync(string userId); 
+        Task<List<ChatHistory>> GetChatsByUserIdAsync(string userId);
         Task<Message?> GetMessageByIdAsync(long messageId);
         Task AddMessageAsync(Message message);
         Task UpdateMessageAsync(Message message);

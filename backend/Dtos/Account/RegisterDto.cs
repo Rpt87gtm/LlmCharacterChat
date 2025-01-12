@@ -1,5 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace api.Dtos.Account
 {
@@ -13,7 +12,7 @@ namespace api.Dtos.Account
 
         [Required]
         public string? Password { get; set; }
-        
-        
+
+
     }
 }

@@ -50,7 +50,7 @@ async def generate_response(messages: List[Message], system_prompt: str, queue: 
     model._history = history
     model._current_prompt_template = "### User:\n{0}\n\n### Assistant:\n"
 
-    if queue:                                                              #TODO Test
+    if queue:                                                              
         for token in model.generate(userMessage, streaming=True):
             await queue.put(token)
         await queue.put("__END__")

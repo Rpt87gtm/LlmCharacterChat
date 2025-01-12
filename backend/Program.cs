@@ -2,9 +2,10 @@ using api.Interfaces;
 using api.Models.User;
 using api.Service;
 using llmChat.Data;
+using llmChat.Interfaces.Repository;
 using llmChat.Interfaces.Services;
-using llmChat.Interfaces;
 using llmChat.Repositories;
+using llmChat.Service;
 using llmChat.Service.LLMService;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
@@ -12,9 +13,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Text.Json.Serialization;
-using llmChat.Interfaces.Repository;
-using llmChat.Service;
-using llmChat.WebSocketConf;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -57,7 +55,9 @@ builder.Services.AddSwaggerGen(option =>
 });
 
 builder.Services.AddHttpClient();
-builder.Services.AddHttpClient<IChatService, ChatService>();
+builder.Services.AddHttpClient<IChatService, ChatService>(client => { 
+    client.Timeout = TimeSpan.FromMinutes(5);
+});
 builder.Services.AddScoped<IChatRepository, ChatRepository>();
 builder.Services.AddScoped<IChatHistoryRepository, ChatHistoryRepository>();
 builder.Services.AddScoped<IChatHistoryService, ChatHistoryService>();
@@ -70,7 +70,8 @@ builder.Services.AddControllers().AddNewtonsoftJson(options =>
     options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
 });
 
-builder.Services.AddDbContext<ApplicationDBContext>(options => {
+builder.Services.AddDbContext<ApplicationDBContext>(options =>
+{
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
 

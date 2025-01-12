@@ -1,7 +1,9 @@
 <template>
   <header class="header">
       <div id="header-conent">
-        <h1>LLM Chat</h1>
+        <RouterLink to="/" style="text-decoration: none; color: inherit;">
+          <h1>LLM Chat</h1>
+        </RouterLink>
         <div class="left-section">
           <RouterLink to="/characters" style="margin-left: 2rem;" class="button" v-if="showHeader">Characters</RouterLink>
           <RouterLink to="/chats" class="button" v-if="showHeader">Chats</RouterLink>

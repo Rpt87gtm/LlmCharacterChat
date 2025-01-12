@@ -1,6 +1,5 @@
 <template>
   <div class="container">
-    
     <form @submit.prevent="loginUser" class="login-form">
       <h1 class="loginText">Login</h1>
       <div class="form-group">
@@ -10,6 +9,9 @@
         <input v-model="password" type="password" placeholder="Password" required class="form-input" />
       </div>
       <button type="submit" class="submit-button">Login</button>
+      <RouterLink to="/register" class="register-button">
+        Have not an account? Register
+      </RouterLink>
     </form>
   </div>
 </template>
@@ -51,6 +53,7 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
+  height: 100vh; /* Центрирование по вертикали */
 }
 
 .login-form {
@@ -63,11 +66,11 @@ export default {
   border-radius: 8px;
   background-color: #f9f9f9;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 300px; /* Фиксированная ширина формы */
 }
 
 .form-group {
   margin-bottom: 15px;
-  margin-right: 20px;
   width: 100%;
 }
 
@@ -78,10 +81,46 @@ export default {
   border-radius: 4px;
   font-size: 16px;
 }
+
 .loginText {
   margin-top: 0px;
-  color:#D33935;
+  color: #D33935;
   font-family: 'Inter', sans-serif;
-  font-weight: 300; 
+  font-weight: 300;
+}
+
+.submit-button {
+  width: 100%;
+  padding: 10px;
+  background-color: #6C0300;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.submit-button:hover {
+  background-color: #A60400;
+}
+
+.register-button {
+  width: 94%;
+  padding: 10px;
+  margin-top: 10px;
+  background-color: #6C0300;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 16px;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.register-button:hover {
+  background-color: #A60400;
 }
 </style>

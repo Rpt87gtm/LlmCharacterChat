@@ -1,8 +1,7 @@
 ﻿using llmChat.Data;
-using llmChat.Interfaces;
+using llmChat.Interfaces.Repository;
 using llmChat.Models.Chat;
 using Microsoft.EntityFrameworkCore;
-using System;
 
 namespace llmChat.Repositories
 {

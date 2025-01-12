@@ -1,14 +1,14 @@
-﻿using api.Models.User;
+﻿using api.Extensions;
+using api.Models.User;
 using llmChat.Dtos.Chat;
-using llmChat.Interfaces;
+using llmChat.Interfaces.Repository;
+using llmChat.Interfaces.Services;
+using llmChat.Mappers;
+using llmChat.Mappers.Chat;
 using llmChat.Models.Chat;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using llmChat.Mappers.Chat;
-using api.Extensions;
-using llmChat.Interfaces.Services;
-using llmChat.Mappers;
 
 namespace llmChat.Controllers
 {
@@ -70,7 +70,7 @@ namespace llmChat.Controllers
 
             Message? assistantMessage = null;
 
-            
+
             if (messageDto.Role == "user")
             {
                 Console.WriteLine("Start generate");

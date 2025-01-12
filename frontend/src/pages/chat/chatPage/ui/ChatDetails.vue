@@ -23,7 +23,7 @@
 
 <script lang="ts">
 import { defineComponent, ref, onMounted, onUnmounted } from "vue";
-import { connectWebSocket, sendSocketMessage, chatSocketState, ChatMessage, disconnectWebSocket } from "../api/chat/chatApi";
+import { connectWebSocket, sendSocketMessage, chatSocketState, ChatMessage, disconnectWebSocket } from "@shared/api/chat/chatApi";
 
 export default defineComponent({
   props: {

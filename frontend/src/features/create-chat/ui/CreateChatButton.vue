@@ -7,7 +7,7 @@
   <script lang="ts">
   import { defineComponent } from "vue";
   import { createChat } from "@/shared/api/chat/createChat";
-  import { ChatDetails } from "@/shared/api/chat/chatApi"; 
+  import { ChatDetails } from "@/shared/api/chat/createChat"; 
   import { useRouter } from "vue-router"; 
   
   export default defineComponent({

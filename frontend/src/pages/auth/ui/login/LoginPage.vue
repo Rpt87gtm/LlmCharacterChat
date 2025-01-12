@@ -2,6 +2,7 @@
     <div id="loginForm">
       
       <LoginForm />
+      
     </div>
   </template>
   
