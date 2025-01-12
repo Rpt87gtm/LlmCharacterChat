@@ -1,4 +1,6 @@
-﻿using Assert = Xunit.Assert;
+﻿using Microsoft.AspNetCore.Mvc;
+using Xunit;
+using Assert = Xunit.Assert;
 
 namespace llmChat.Controllers.Tests
 {
