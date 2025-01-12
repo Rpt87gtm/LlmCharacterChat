@@ -44,7 +44,7 @@ async def shutdown_model():
 
 
 async def generate_response(messages: List[Message], system_prompt: str, queue: TokenStreamQueue = None):
-    history = [{"role": "system", "content": system_prompt}] + [msg.dict() for msg in messages[:-1]]
+    history = [{"role": "system", "content": system_prompt}] + [msg.model_dump() for msg in messages[:-1]]
     userMessage = messages[-1].content
 
     model._history = history
@@ -55,13 +55,13 @@ async def generate_response(messages: List[Message], system_prompt: str, queue: 
             await queue.put(token)
         await queue.put("__END__")
         model._history = None
-        model._current_prompt_template = "{0}"
+        #model._current_prompt_template = "{0}"
     else:
         print("start generate")
         response = model.generate(userMessage)
 
         model._history = None
-        model._current_prompt_template = "{0}"
+        #model._current_prompt_template = "{0}"
         return response
 
 @app.post("/chat")

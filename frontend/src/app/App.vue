@@ -39,4 +39,12 @@ export default {
   padding-top: 60px; /* Высота хедера + отступ */
   width: 100%;
 }
+
+.main-content {
+  width: 100%;
+  max-width: 1200px; /* Ограничение максимальной ширины */
+  padding: 1rem;
+  display: flex;
+  justify-content: center; /* Центрирование содержимого внутри .main-content */
+}
 </style>
