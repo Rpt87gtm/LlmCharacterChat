@@ -1,86 +1,95 @@
 <template>
-    <div class="chat-details">
-      <h1>{{ characterName }}</h1>
-      <div class="messages">
-        <div v-for="message in messages" :key="message.id" :class="`message ${message.role}`">
-          {{ message.content }}
-        </div>
-      </div>
-      <form @submit.prevent="handleSendMessage">
-        <textarea v-model="newMessage" required></textarea>
-        <button type="submit">Send</button>
-      </form>
+  <div class="chat-details">
+    <h1>{{ chatSocketState.characterName }}</h1>
+    <div v-if="chatSocketState.error" class="error">
+      {{ chatSocketState.error }}
     </div>
-  </template>
-  
-  <script lang="ts">
-  import { defineComponent, ref, onMounted } from "vue";
-  import { fetchChatDetails, sendMessage } from "../api/chat/chatApi";
-  import { ChatMessage, ChatDetails } from "../api/chat/chatApi";
-  
-  export default defineComponent({
-    props: {
-      chatId: {
-        type: String,
-        required: true,
-      },
+    
+    <div class="messages">
+      <div
+        v-for="message in chatSocketState.messages"
+        :key="message.Id"
+        :class="`message ${message.Role}`"
+      >
+        {{ message.Content }}
+      </div>
+    </div>
+    <form @submit.prevent="handleSendMessage">
+      <textarea v-model="newMessage" required :disabled="!chatSocketState.isConnected"></textarea>
+      <button type="submit" :disabled="!chatSocketState.isConnected">Send</button>
+    </form>
+  </div>
+</template>
+
+<script lang="ts">
+import { defineComponent, ref, onMounted, onUnmounted } from "vue";
+import { connectWebSocket, sendSocketMessage, chatSocketState, ChatMessage, disconnectWebSocket } from "../api/chat/chatApi";
+
+export default defineComponent({
+  props: {
+    chatId: {
+      type: String,
+      required: true,
     },
-    setup(props) {
-      const messages = ref<ChatMessage[]>([]);
-      const characterName = ref<string>("");
-      const newMessage = ref<string>("");
-  
-      onMounted(async () => {
-        try {
-          const chat: ChatDetails = await fetchChatDetails(props.chatId);
-          characterName.value = chat.characterName;
-          messages.value = chat.messages;
-        } catch (error) {
-          console.error("Error loading chat details", error);
-        }
-      });
-  
-      const handleSendMessage = async () => {
-        try {
-            const response = await sendMessage({
-            chatId: props.chatId,
-            role: "user",
-            content: newMessage.value,
-            });
+  },
+  setup(props) {
+    const newMessage = ref<string>("");
 
-            if (response.userMessage) {
-            messages.value.push(response.userMessage);
-            }
+    const onMessageCallback = (response: any) => {
+      if (response.assistantMessage) {
+        console.log("Assistant responded:", response.assistantMessage);
+      }
+    };
 
-            if (response.assistantMessage) {
-            messages.value.push(response.assistantMessage);
-            }
+    onMounted(() => {
+      disconnectWebSocket(); 
+      connectWebSocket(props.chatId, onMessageCallback); 
+    });
 
-            newMessage.value = "";
-        } catch (error) {
-            console.error("Error sending message", error);
-        }
+    onUnmounted(() => {
+      disconnectWebSocket(); 
+    });
+
+    const handleSendMessage = () => {
+      if (newMessage.value.trim()) {
+        const message: ChatMessage = {
+          ChatHistoryId: props.chatId,
+          Role: "user",
+          Content: newMessage.value.trim(),
         };
+        sendSocketMessage(message);
+        newMessage.value = "";
+      }
+    };
 
+    return {
+      newMessage,
+      chatSocketState,
+      handleSendMessage,
+    };
+  },
+});
+</script>
 
-  
-      return { messages, characterName, newMessage, handleSendMessage };
-    },
-  });
-  </script>
-  
-  <style scoped>
-  .chat-details {
-    padding: 1rem;
-  }
-  .messages {
-    max-height: 300px;
-    overflow-y: auto;
-  }
-  .message {
-    margin-bottom: 0.5rem;
-  }
-  .message.user {
-    text-align: right;
-  }
-  </style>
+<style scoped>
+.chat-details {
+  padding: 1rem;
+}
+.messages {
+  max-height: 300px;
+  overflow-y: auto;
+}
+.message {
+  margin-bottom: 0.5rem;
+}
+.message.user {
+  text-align: right;
+}
+.message.assistant {
+  text-align: left;
+}
+.error {
+  color: red;
+  margin-bottom: 1rem;
+}
+</style>

@@ -11,10 +11,10 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
-using Python.Runtime;
 using System.Text.Json.Serialization;
 using llmChat.Interfaces.Repository;
 using llmChat.Service;
+using llmChat.WebSocketConf;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -74,7 +74,7 @@ builder.Services.AddDbContext<ApplicationDBContext>(options => {
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
 
-
+builder.Services.AddScoped<ChatWebSocketHandler>();
 
 // auth
 builder.Services.AddIdentity<AppUser, IdentityRole>(options =>
@@ -134,6 +134,7 @@ if (app.Environment.IsDevelopment())
     app.UseDeveloperExceptionPage();
 }
 app.UseHttpsRedirection();
+app.UseWebSockets();
 app.UseRouting();
 app.UseCors("AllowAllOrigins");
 
@@ -141,7 +142,20 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
-
+app.Map("/ws", async context =>
+{
+    if (context.WebSockets.IsWebSocketRequest)
+    {
+        using var webSocket = await context.WebSockets.AcceptWebSocketAsync();
+        var webSocketHandler = context.RequestServices.GetRequiredService<ChatWebSocketHandler>();
+        var cancellationToken = new CancellationTokenSource(TimeSpan.FromMinutes(5)).Token; // Таймаут 5 минут
+        await webSocketHandler.HandleAsync(webSocket, cancellationToken);
+    }
+    else
+    {
+        context.Response.StatusCode = 400;
+    }
+});
 
 
 app.Run();
