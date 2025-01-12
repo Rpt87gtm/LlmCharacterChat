@@ -5,7 +5,7 @@
       {{ chatSocketState.error }}
     </div>
     
-    <div class="messages">
+    <div class="messages" ref="messagesContainer">
       <div
         v-for="message in chatSocketState.messages"
         :key="message.Id"
@@ -14,15 +14,20 @@
         {{ message.Content }}
       </div>
     </div>
-    <form @submit.prevent="handleSendMessage">
-      <textarea v-model="newMessage" required :disabled="!chatSocketState.isConnected"></textarea>
+    <form @submit.prevent="handleSendMessage" class="chat-form">
+      <textarea
+        v-model="newMessage"
+        required
+        :disabled="!chatSocketState.isConnected"
+        placeholder="Type your message..."
+      ></textarea>
       <button type="submit" :disabled="!chatSocketState.isConnected">Send</button>
     </form>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, ref, onMounted, onUnmounted } from "vue";
+import { defineComponent, ref, onMounted, onUnmounted, nextTick } from "vue";
 import { connectWebSocket, sendSocketMessage, chatSocketState, ChatMessage, disconnectWebSocket } from "@shared/api/chat/chatApi";
 
 export default defineComponent({
@@ -34,17 +39,23 @@ export default defineComponent({
   },
   setup(props) {
     const newMessage = ref<string>("");
+    const messagesContainer = ref<HTMLElement | null>(null); // Ссылка на контейнер сообщений
 
     const onMessageCallback = (response: any) => {
-      if (response.assistantMessage) {
-        console.log("Assistant responded:", response.assistantMessage);
-      }
+      if (response.AssistantMessage || response.UserMessage) {
+        nextTick(() => scrollToBottom());
+      } 
     };
+    const onLoading = () =>{
+      nextTick(() => scrollToBottom()); 
+    }
 
     onMounted(() => {
       disconnectWebSocket(); 
-      connectWebSocket(props.chatId, onMessageCallback); 
+      connectWebSocket(props.chatId, onMessageCallback, onLoading); 
+      
     });
+    
 
     onUnmounted(() => {
       disconnectWebSocket(); 
@@ -59,6 +70,13 @@ export default defineComponent({
         };
         sendSocketMessage(message);
         newMessage.value = "";
+        
+      }
+    };
+
+    const scrollToBottom = () => { 
+      if (messagesContainer.value) {
+        messagesContainer.value.scrollTop = messagesContainer.value.scrollHeight;
       }
     };
 
@@ -66,6 +84,7 @@ export default defineComponent({
       newMessage,
       chatSocketState,
       handleSendMessage,
+      messagesContainer,
     };
   },
 });
@@ -91,5 +110,34 @@ export default defineComponent({
 .error {
   color: red;
   margin-bottom: 1rem;
+}
+textarea {
+  flex: 1;
+  padding: 0.75rem;
+  border-radius: 8px;
+  font-size: 1rem;
+  resize: none; 
+  transition: border-color 0.3s ease;
+}
+.chat-form {
+  display: flex;
+  gap: 0.5rem;
+  padding: 0.3rem;
+  background-color: #6C0300;
+  border-radius: 8px;
+}
+
+button {
+  padding: 0.75rem 1.5rem;
+  background-color: #d33935;
+  color: #6C0300;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s ease;
+}
+button:hover:not(:disabled) {
+  background-color: #A60400;
 }
 </style>

@@ -34,7 +34,9 @@ export const chatSocketState = reactive({
 
 let shouldReconnect = true;
 
-export const connectWebSocket = (chatId: string, onMessageCallback: (message: ChatMessageResponse) => void): void => {
+export const connectWebSocket = (chatId: string, 
+    onMessageCallback: (message: ChatMessageResponse,) => void, 
+    onLoading:() => void): void => {
     const socket = new WebSocket(SOCKET_URL);
 
     socket.onopen = () => {
@@ -58,15 +60,18 @@ export const connectWebSocket = (chatId: string, onMessageCallback: (message: Ch
   
           if ("CharacterName" in data) {
               chatSocketState.characterName = data.CharacterName;
-              chatSocketState.messages = data.Messages; 
+              chatSocketState.messages = data.Messages;
+              onLoading();
               return;
           }
   
           if (data.UserMessage) {
-              chatSocketState.messages.push(data.UserMessage); 
+              chatSocketState.messages.push(data.UserMessage);
+              onMessageCallback(data); 
           }
           if (data.AssistantMessage) {
-              chatSocketState.messages.push(data.AssistantMessage); 
+              chatSocketState.messages.push(data.AssistantMessage);
+              onMessageCallback(data); 
           }
       } catch (error) {
           console.error("Failed to parse WebSocket message:", error);
@@ -82,7 +87,7 @@ export const connectWebSocket = (chatId: string, onMessageCallback: (message: Ch
 
         if (shouldReconnect) {
             setTimeout(() => {
-                connectWebSocket(chatId, onMessageCallback);
+                connectWebSocket(chatId, onMessageCallback, onLoading);
             }, 5000);
         }
     };
