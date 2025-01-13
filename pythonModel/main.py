@@ -48,21 +48,34 @@ async def generate_response(messages: List[Message], system_prompt: str, queue: 
     userMessage = messages[-1].content
 
     model._history = history
-    model._current_prompt_template = "### User:\n{0}\n\n### Assistant:\n"
+    
+    model._current_prompt_template = "### Human:\n{0}\n\n### Assistant:\n"
+    
 
-    if queue:                                                              
-        for token in model.generate(userMessage, streaming=True):
-            await queue.put(token)
-        await queue.put("__END__")
-        model._history = None
-        #model._current_prompt_template = "{0}"
-    else:
-        print("start generate")
-        response = model.generate(userMessage)
-
-        model._history = None
-        #model._current_prompt_template = "{0}"
-        return response
+    with model.chat_session(system_prompt=history_to_string(history), prompt_template="### Human:\n{0}\n\n### Assistant:\n"):
+        print(model.chat_session)
+        if queue:                                                              
+            for token in model.generate(userMessage, streaming=True):
+                await queue.put(token)
+            await queue.put("__END__")
+            model._history = None
+            model._current_prompt_template = "{0}"
+        else:
+            print("start generate")
+            response = model.generate(userMessage)
+            print("AFTER GENERATION:")
+            print(model._history)
+            model._history = None
+            model._current_prompt_template = "{0}"
+            return response
+        
+def history_to_string(history: List[Dict[str, str]]) -> str:
+    result = []
+    for message in history:
+        role = message["role"]
+        content = message["content"]
+        result.append(f"{role.capitalize()}: {content}")
+    return "\n".join(result)
 
 @app.post("/chat")
 async def chat(request: ChatRequest):
