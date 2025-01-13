@@ -30,5 +30,8 @@
   <ItemGroup>
     <Using Include="Microsoft.VisualStudio.TestTools.UnitTesting" />
   </ItemGroup>
+  <ItemGroup>
+    <CoverletMsbuildExcludeByFile Include="**/Program.cs" />
+  </ItemGroup>
 
 </Project>

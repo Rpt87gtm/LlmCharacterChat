@@ -3,10 +3,10 @@
     <DataCollectors>
       <DataCollector friendlyName="XPlat code coverage">
         <Configuration>
-          <ExcludeByFile>
-            <!-- Исключить все файлы в папке Migrations -->
-            <File>.*\\Migrations\\.*</File>
-          </ExcludeByFile>
+          <!-- Исключить все файлы в папке Migrations -->
+          <ExcludeByFile>**/Migrations/*.cs</ExcludeByFile>
+          <!-- Исключить файл Program.cs -->
+          <ExcludeByFile>**/Program.cs</ExcludeByFile>
         </Configuration>
       </DataCollector>
     </DataCollectors>
