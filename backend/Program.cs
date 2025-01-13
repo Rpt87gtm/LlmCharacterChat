@@ -134,7 +134,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
     app.UseDeveloperExceptionPage();
 }
-app.UseHttpsRedirection();
+//app.UseHttpsRedirection();
 app.UseWebSockets();
 app.UseRouting();
 app.UseCors("AllowAllOrigins");
