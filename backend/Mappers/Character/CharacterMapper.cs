@@ -25,7 +25,7 @@ namespace llmChat.Mappers
                 Name = character.Name,
                 SystemPrompt = character.SystemPrompt,
                 CreatedByAppUserId = character.CreatedByAppUserId,
-                CreatedByAppUserName = character.CreatedByAppUser.UserName,
+                CreatedByAppUserName = character.CreatedByAppUser?.UserName,
             };
         }
 
