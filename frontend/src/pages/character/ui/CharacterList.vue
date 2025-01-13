@@ -275,7 +275,7 @@ h1 {
 
 
 .pagination-info {
-  color: #fff;
+  color: #000;
   display: flex;
   align-items: center;
 }
