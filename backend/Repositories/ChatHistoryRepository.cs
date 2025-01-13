@@ -34,6 +34,7 @@ namespace llmChat.Repositories
         public async Task SaveChatHistoryAsync(ChatHistory chatHistory)
         {
             var existingChat = await _dbContext.ChatHistories
+                .Include(ch => ch.Messages) 
                 .FirstOrDefaultAsync(ch => ch.Id == chatHistory.Id);
 
             if (existingChat == null)
@@ -42,8 +43,29 @@ namespace llmChat.Repositories
             }
             else
             {
-                existingChat.Messages = chatHistory.Messages;
-                _dbContext.ChatHistories.Update(existingChat);
+                _dbContext.Entry(existingChat).CurrentValues.SetValues(chatHistory);
+
+                foreach (var existingMessage in existingChat.Messages.ToList())
+                {
+                    if (!chatHistory.Messages.Any(m => m.Id == existingMessage.Id))
+                    {
+                        _dbContext.Messages.Remove(existingMessage);
+                    }
+                }
+
+                foreach (var message in chatHistory.Messages)
+                {
+                    message.ChatHistoryId = chatHistory.Id;
+                    var existingMessage = existingChat.Messages.FirstOrDefault(m => m.Id == message.Id);
+                    if (existingMessage == null)
+                    {
+                        existingChat.Messages.Add(message);
+                    }
+                    else
+                    {
+                        _dbContext.Entry(existingMessage).CurrentValues.SetValues(message);
+                    }
+                }
             }
 
             await _dbContext.SaveChangesAsync();
