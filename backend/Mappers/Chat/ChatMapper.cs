@@ -7,6 +7,8 @@ namespace llmChat.Mappers.Chat
     {
         public static ChatHistory ToEntity(this ChatCreateDto dto, string userId)
         {
+            if(userId == null) { throw new ArgumentNullException("userId"); }
+            if (dto == null) throw new ArgumentNullException(nameof(dto));
             return new ChatHistory
             {
                 CharacterId = dto.CharacterId,
@@ -16,6 +18,7 @@ namespace llmChat.Mappers.Chat
 
         public static ChatResponseDto ToDtoWithMessages(this ChatHistory chat)
         {
+            if (chat == null) { throw new ArgumentNullException(nameof(chat)); }
             return new ChatResponseDto
             {
                 ChatId = chat.Id,
@@ -25,6 +28,7 @@ namespace llmChat.Mappers.Chat
         }
         public static ChatNameDto ToNameOnlyDto(this ChatHistory chat)
         {
+            if (chat == null) { throw new ArgumentNullException(nameof(chat)); }
             return new ChatNameDto
             {
                 ChatId = chat.Id,

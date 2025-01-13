@@ -5,12 +5,14 @@ using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using llmChat.Data;
+using System.Diagnostics.CodeAnalysis;
 
 #nullable disable
 
 namespace llmChat.Migrations
 {
     [DbContext(typeof(ApplicationDBContext))]
+    [ExcludeFromCodeCoverage]
     partial class ApplicationDBContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)

@@ -1,6 +1,6 @@
 <template>
     <div class="character-edit-container">
-      <button @click="goBack" class="back-button">Назад</button>
+      <BackButton/>
       <h1>Edit Character</h1>
       <form @submit.prevent="handleUpdateCharacter">
         <div>
@@ -20,9 +20,13 @@
   import { ref, onMounted } from "vue";
   import { useRoute, useRouter } from "vue-router";
   import { fetchCharacterById, updateCharacter } from "@/shared/api/character";
+  import  BackButton from "@/shared/components/BackButton/ui";
   
   export default {
     name: "CharacterEdit",
+    components: {
+    BackButton, 
+  },
     setup() {
       const route = useRoute();
       const router = useRouter();
@@ -43,40 +47,71 @@
           console.error("ID is missing");
         }
       };
-  
-      const goBack = () => {
-        router.go(-1);
-      };
-  
-      return { form, handleUpdateCharacter, goBack };
+      return { form, handleUpdateCharacter };
     },
   };
   </script>
   
   <style scoped>
+  
   .character-edit-container {
-    position: relative;
-    padding: 2rem;
-    width: 100%;
-    max-width: none;
-  }
-  
-  .back-button {
-    position: absolute;
-    top: 1rem;
-    left: 1rem;
-    padding: 0.5rem 1rem;
-    background-color: #6C0300;
-    color: #A60400;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 1rem;
-    transition: background-color 0.3s ease;
-    z-index: 10;
-  }
-  
-  .back-button:hover {
-    background-color: #A60400;
-  }
+  position: relative;
+  padding: 2rem;
+  width: 100%;
+  margin-top: 30px;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+form div {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+label {
+  font-size: 1rem;
+}
+
+input, textarea {
+  padding: 0.75rem;
+  border: 1px solid #444;
+  border-radius: 4px;
+  background-color: #fff;
+  font-size: 1rem;
+  transition: border-color 0.3s ease;
+}
+
+input:focus, textarea:focus {
+  border-color: #A60400;
+  outline: none;
+}
+textarea {
+  resize: none;
+  height: 8rem;
+}
+button[type="submit"] {
+  padding: 0.75rem;
+  background-color: #6C0300;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s ease;
+}
+
+button[type="submit"]:hover {
+  background-color: #A60400;
+}
   </style>

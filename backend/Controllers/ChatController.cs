@@ -32,8 +32,18 @@ namespace llmChat.Controllers
 
         private async Task<AppUser?> GetCurrentUser()
         {
-            string username = User.GetUsername();
-            return await _userManager.FindByNameAsync(username);
+            try
+            {
+                if (User == null)
+                    return null;
+
+                string username = User.GetUsername();
+                return await _userManager.FindByNameAsync(username);
+
+            }
+            catch (Exception ex) { 
+                return null;
+            }
         }
 
         [HttpPost]

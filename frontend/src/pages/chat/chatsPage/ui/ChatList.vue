@@ -13,6 +13,8 @@
 import { defineComponent, ref, onMounted } from "vue";
 import { fetchUserChats, ChatSummary } from "@shared/api/chat/fetchUserChats";
 
+
+
 export default defineComponent({
   setup() {
     const chats = ref<ChatSummary[]>([]);

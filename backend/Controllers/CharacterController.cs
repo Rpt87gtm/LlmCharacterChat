@@ -36,14 +36,25 @@ namespace llmChat.Controllers
 
             Character character = createDto.ToEntity(appUser.Id);
             Character createdCharacter = await _characterRepository.CreateAsync(character);
-
+            createdCharacter.CreatedByAppUser = appUser;
             return CreatedAtAction(nameof(GetCharacterById), new { id = createdCharacter.Id }, createdCharacter.ToDto());
         }
 
         private async Task<AppUser?> GetCurrentUser()
         {
-            string username = User.GetUsername();
-            return await _userManager.FindByNameAsync(username);
+            try
+            {
+                if (User == null)
+                    return null;
+
+                string username = User.GetUsername();
+                return await _userManager.FindByNameAsync(username);
+
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
         }
 
         [HttpGet("{id}")]

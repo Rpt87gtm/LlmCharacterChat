@@ -7,6 +7,9 @@ namespace llmChat.Mappers.Chat
     {
         public static ChatMessageDto ToDto(this Message message)
         {
+            if (message == null)
+                throw new ArgumentNullException(nameof(message));
+
             return new ChatMessageDto
             {
                 Id = message.Id,
@@ -19,6 +22,7 @@ namespace llmChat.Mappers.Chat
 
         public static Message ToEntity(this ChatMessageDto dto)
         {
+            if (dto == null) { throw new ArgumentNullException(nameof(dto)); }
             return new Message
             {
                 Id = dto.Id,

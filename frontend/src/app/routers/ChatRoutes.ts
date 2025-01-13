@@ -1,4 +1,4 @@
-import UserChatsPage from "@/pages/chat/chatsPage/ui/ChatList.vue";
+import UserChatsPage from "@/pages/chat/chatsPage/ui/UserChatsPage.vue";
 import ChatPage from "@/pages/chat/chatPage/ui/ChatPage.vue";
 
 export const ChatRoutes = [
